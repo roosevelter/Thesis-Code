@@ -3,6 +3,8 @@
 no.doubt.terrorism = subset(terrorism, doubtterr == 0 & is.na(nkill) == F, select = c(country_txt, nkill, iyear, country))
 no.doubt.terrorism = aggregate(x = setup, by = list(setup$country_txt, setup$iyear), FUN = function(x) sum(as.numeric(x)))
 
+possible.solution = aggregate(x = setup, by = list(countries, setup$iyear), FUN = function(x) sum(as.numeric(x)))
+
 
 Try to get the number of terrorist attacks for a given country-year.
 
