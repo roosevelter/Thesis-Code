@@ -1,11 +1,6 @@
-# Summing up the number of fatalities for each year in the GTD data. But first, some cleaning.
+# Summing up fatalities by country-year. Be sure to read in GTD data first.
 
-no.doubt.terrorism = subset(terrorism, region == 10 & doubtterr == 0)
+no.doubt.terrorism = subset(terrorism, doubtterr == 0 & is.na(nkill) == F, select = c(country_txt, nkill, iyear, country))
+no.doubt.terrorism = aggregate(x = setup, by = list(setup$country_txt, setup$iyear), FUN = function(x) sum(as.numeric(x)))
 
-fatality.years = rep(NA, length(unique(no.doubt.terrorism$iyear)))
 
-for (i in 1:length(fatality.years)) {
-  fatality.years[i] = colSums(subset(no.doubt.terrorism, iyear == unique(no.doubt.terrorism$iyear)[i], select = nkill))
-}
-
-no.doubt.terrorism = cbind(no.doubt.terrorism, fatality.years)
