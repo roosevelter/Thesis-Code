@@ -22,3 +22,5 @@ colnames(possible.solution) = c("Country", "Year", "Victims", "Country Code", "T
 # Cleaning the SWIID data.
 
 swiid_data = lapply(swiid, function(x) x[x$year>=1970,, drop=F])
+swiid_data = as.data.frame(swiid_data)
+swiid_data = subset(swiid_data, is.na(gini_net) == F, select = c(country, year, gini_net))
