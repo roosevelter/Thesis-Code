@@ -17,4 +17,8 @@ for (i in 1:length(possible.solution[,7])) {
 
 
 possible.solution = possible.solution[,-c(3, 5)]
-colnames(possible.solution) = c("Country", "Year", "Victims
+colnames(possible.solution) = c("Country", "Year", "Victims", "Country Code", "Terrorist Attack")
+
+# Cleaning the SWIID data.
+
+swiid_data = lapply(swiid, function(x) x[x$year>=1970,, drop=F])
