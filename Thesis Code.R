@@ -16,3 +16,5 @@ for (i in 1:length(possible.solution[,7])) {
 }
 
 
+possible.solution = possible.solution[,-c(3, 5)]
+colnames(possible.solution) = c("Country", "Year", "Victims
