@@ -35,7 +35,7 @@ swiid_data = subset(swiid_data, is.na(gini_net) == F, select = c(country, year, 
 
 first.merge = merge(possible.solution, swiid_data, by = c("country", "year"))
 
-# Load in the PRS data. 
+# Load in and clean the PRS data. 
 ethnic.tensions = read.xlsx("CountryData.xlsx", 1)
 ethnic.tensions = ethnic.tensions[ ,-2]
 ethnic.tensions = na.omit(ethnic.tensions)
@@ -61,5 +61,8 @@ byapply <- function(x, by, fun, ...)
             })
 }
 
-ethnic.tensions = byapply(ethnic.tensions[,3:ncol(ethnic.tensions) 12, rowMeans)
+ethnic.tensions = byapply(ethnic.tensions[,3:ncol(ethnic.tensions)], 12, rowMeans)
 colnames(ethnic.tensions) = c(country, c(1984:2013))
+ethnic.tensions = melt(ethnic.tensions)
+
+second.merge = merge(first.merge, ethnic.te
