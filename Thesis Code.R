@@ -5,26 +5,16 @@ setwd("C:/Users/lc1976/Desktop")
 install.packages(c("xlsx", "reshape2"))
 library(xlsx); library(reshape2)
 
-# Summing up fatalities by country-year. Be sure to read in GTD data first.
+# Recording whether or not there was a terrorist attack for a country-year, and if so, the number. Be sure to read in GTD data first.
+no.doubt.terrorism = subset(terrorism, doubtterr == 0 & year > 1991)
+no.doubt.terrorism = table(no.doubt.terrorism$country_txt, no.doubt.terrorism$iyear)
+no.doubt.terrorism = melt(no.doubt.terrorism)
 
-no.doubt.terrorism = subset(terrorism, doubtterr == 0 & is.na(nkill) == F, select = c(country_txt, nkill, iyear, country))
-possible.solution = aggregate(x = no.doubt.terrorism, by = list(no.doubt.terrorism$country_txt, no.doubt.terrorism$iyear), FUN = function(x) sum(as.numeric(x)))
+terroristattack = rep(NA, nrow(no.doubt.terrorism))
+terroristattack = ifelse(attempt[,3] != 0, 1, 0)
 
-attack = vector("numeric", 3075)
-possible.solution = cbind(possible.solution, attack)
-
-for (i in 1:length(possible.solution[,7])) {
-  if (possible.solution$nkill[i] == 0) {
-    possible.solution[i,7] = 0
-  }
-  if (possible.solution$nkill[i] > 0) {
-    possible.solution[i,7] = 1
-  }
-}
-
-
-possible.solution = possible.solution[,-c(3, 5)]
-colnames(possible.solution) = c("country", "year", "victims", "country code", "terrorist attack")
+no.doubt.terrorism = cbind(no.doubt.terrorism[,1:2], terroristattack, no.doubt.terrorism[,3])
+colnames(no.doubt.terrorism) = c("country", "year", "terroristattack", "nattacks")
 
 # Cleaning the SWIID data.
 load("SWIIDv5_0.RData")
@@ -33,7 +23,7 @@ swiid_data = lapply(swiid, function(x) x[x$year>=1970,, drop=F])
 swiid_data = as.data.frame(swiid_data)
 swiid_data = subset(swiid_data, is.na(gini_net) == F, select = c(country, year, gini_net))
 
-first.merge = merge(possible.solution, swiid_data, by = c("country", "year"))
+first.merge = merge(no.doubt.terrorism, swiid_data, by = c("country", "year"), all = T)
 
 # Load in and clean the PRS data. 
 ethnic.tensions = read.xlsx("CountryData.xlsx", 1)
@@ -65,10 +55,4 @@ ethnic.tensions = byapply(ethnic.tensions[,3:ncol(ethnic.tensions)], 12, rowMean
 colnames(ethnic.tensions) = c(country, c(1984:2013))
 ethnic.tensions = melt(ethnic.tensions)
 
-second.merge = merge(first.merge, ethnic.te
-
-
-# Calculating the number of terrorist attacks by country-year, and then creating the dummy variable.
-for (i in 1:length(countries)) {
-    terroristattacks[i] = nrow(subset(ndt, country_txt == countries[i] & iyear == years[i]))
-} 
+second.merge = merge(first.merge, ethnic.tensions, by = c("country", "year"), all = T)
