@@ -23,7 +23,7 @@ swiid_data = lapply(swiid, function(x) x[x$year>=1970,, drop=F])
 swiid_data = as.data.frame(swiid_data)
 swiid_data = subset(swiid_data, is.na(gini_net) == F, select = c(country, year, gini_net))
 
-first.merge = merge(no.doubt.terrorism, swiid_data, by = c("country", "year"), all = T)
+first.merge = merge(no.doubt.terrorism, swiid_data, by = c("country", "year"))
 
 # Load in and clean the PRS data. 
 ethnic.tensions = read.xlsx("CountryData.xlsx", 1)
@@ -52,7 +52,8 @@ byapply <- function(x, by, fun, ...)
 }
 
 ethnic.tensions = byapply(ethnic.tensions[,3:ncol(ethnic.tensions)], 12, rowMeans)
-colnames(ethnic.tensions) = c(country, c(1984:2013))
+colnames(ethnic.tensions) = c("country", c(1984:2013))
 ethnic.tensions = melt(ethnic.tensions)
+colnames(ethnic.tensions) = c("country", "year", "ethnictension")
 
-second.merge = merge(first.merge, ethnic.tensions, by = c("country", "year"), all = T)
+second.merge = merge(first.merge, ethnic.tensions, by = c("country", "year"))
