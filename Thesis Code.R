@@ -11,7 +11,7 @@ no.doubt.terrorism = table(no.doubt.terrorism$country_txt, no.doubt.terrorism$iy
 no.doubt.terrorism = melt(no.doubt.terrorism)
 
 terroristattack = rep(NA, nrow(no.doubt.terrorism))
-terroristattack = ifelse(attempt[,3] != 0, 1, 0)
+terroristattack = ifelse(no.doubt.terrorism[,3] != 0, 1, 0)
 
 no.doubt.terrorism = cbind(no.doubt.terrorism[,1:2], terroristattack, no.doubt.terrorism[,3])
 colnames(no.doubt.terrorism) = c("country", "year", "terroristattack", "nattacks")
