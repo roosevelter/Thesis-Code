@@ -6,7 +6,7 @@ install.packages(c("xlsx", "reshape2"))
 library(xlsx); library(reshape2)
 
 # Recording whether or not there was a terrorist attack for a country-year, and if so, the number. Be sure to read in GTD data first.
-no.doubt.terrorism = subset(terrorism, doubtterr == 0 & year > 1991)
+no.doubt.terrorism = subset(terrorism, doubtterr == 0 & iyear > 1991)
 no.doubt.terrorism = table(no.doubt.terrorism$country_txt, no.doubt.terrorism$iyear)
 no.doubt.terrorism = melt(no.doubt.terrorism)
 
