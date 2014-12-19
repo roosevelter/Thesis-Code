@@ -66,3 +66,9 @@ colnames(ethnic.tensions) = c(country, c(1984:2013))
 ethnic.tensions = melt(ethnic.tensions)
 
 second.merge = merge(first.merge, ethnic.te
+
+
+# Calculating the number of terrorist attacks by country-year, and then creating the dummy variable.
+for (i in 1:length(countries)) {
+    terroristattacks[i] = nrow(subset(ndt, country_txt == countries[i] & iyear == years[i]))
+} 
