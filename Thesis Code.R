@@ -1,4 +1,4 @@
-# Before all of this, clean the data sets so that each data set has matching country names. They don't all include country codes.
+# Before all of this, clean the data sets so that each data set has matching country names. Country names should be matched to the GTD.
 
 # Set your goddamn working directory. Load the required packages.
 setwd("C:/Users/lc1976/Desktop")
@@ -57,3 +57,7 @@ ethnic.tensions = melt(ethnic.tensions)
 colnames(ethnic.tensions) = c("country", "year", "ethnictension")
 
 second.merge = merge(first.merge, ethnic.tensions, by = c("country", "year"))
+
+# Load in GDP per capita data from the World Bank.
+gdppc = gdppc[ , -c(2:4, 59)]
+gdppc = melt(gdppc)
