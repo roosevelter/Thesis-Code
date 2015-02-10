@@ -65,3 +65,4 @@ colnames(gdppc) = c("country" , "year", "gdppc")
 gdppc$year = substring(gdppc$year, 2)
 
 thirdmerge = merge(secondmerge, gdppc, by = c("country", "year"))
+thirdmerge = thirdmerge[,-3]
