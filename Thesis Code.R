@@ -61,3 +61,7 @@ second.merge = merge(first.merge, ethnic.tensions, by = c("country", "year"))
 # Load in GDP per capita data from the World Bank.
 gdppc = gdppc[ , -c(2:4, 59)]
 gdppc = melt(gdppc)
+colnames(gdppc) = c("country" , "year", "gdppc")
+gdppc$year = substring(gdppc$year, 2)
+
+thirdmerge = merge(secondmerge, gdppc, by = c("country", "year"))
