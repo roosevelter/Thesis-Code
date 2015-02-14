@@ -71,3 +71,9 @@ thirdmerge = thirdmerge[,-3]
 liberties = read.xlsx("liberties.xlsx", 1)
 liberties = liberties[1:205, c(1, 59:ncol(liberties))]
 liberties = liberties[,1:67]
+libcountries = liberties[,1]
+Nth.delete <- function(dataframe, n) dataframe[,-(seq(n,to=ncol(dataframe),by=n))]
+liberties = liberties[,2:ncol(liberties)]
+liberties = Nth.delete(liberties, 3)
+liberties = byapply(liberties, 2, rowMeans, na.rm = T)
+liberties = cbind(libcountries, liberties)
