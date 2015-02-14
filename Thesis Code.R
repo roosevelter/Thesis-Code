@@ -16,7 +16,7 @@ terroristattack = ifelse(no.doubt.terrorism[,3] != 0, 1, 0)
 no.doubt.terrorism = cbind(no.doubt.terrorism[,1:2], terroristattack, no.doubt.terrorism[,3])
 colnames(no.doubt.terrorism) = c("country", "year", "terroristattack", "nattacks")
 
-# Cleaning the SWIID data.
+# Cleaning the matched SWIID data.
 load("SWIIDv5_0.RData")
 
 swiid_data = lapply(swiid, function(x) x[x$year>=1970,, drop=F])
@@ -25,7 +25,7 @@ swiid_data = subset(swiid_data, is.na(gini_net) == F, select = c(country, year, 
 
 first.merge = merge(no.doubt.terrorism, swiid_data, by = c("country", "year"))
 
-# Load in and clean the PRS data. 
+# Load in and clean the matched PRS data. 
 ethnic.tensions = read.xlsx("CountryData.xlsx", 1)
 ethnic.tensions = ethnic.tensions[ ,-2]
 ethnic.tensions = na.omit(ethnic.tensions)
@@ -58,7 +58,7 @@ colnames(ethnic.tensions) = c("country", "year", "ethnictension")
 
 second.merge = merge(first.merge, ethnic.tensions, by = c("country", "year"))
 
-# Load in GDP per capita data from the World Bank.
+# Load in matched GDP per capita data from the World Bank.
 gdppc = gdppc[ , -c(2:4, 59)]
 gdppc = melt(gdppc)
 colnames(gdppc) = c("country" , "year", "gdppc")
@@ -66,3 +66,8 @@ gdppc$year = substring(gdppc$year, 2)
 
 thirdmerge = merge(secondmerge, gdppc, by = c("country", "year"))
 thirdmerge = thirdmerge[,-3]
+
+# Load in matched Freedom House data. Remember that the Freedom House data should be converted to .xlsx format first.
+liberties = read.xlsx("liberties.xlsx", 1)
+liberties = liberties[1:205, c(1, 59:ncol(liberties))]
+liberties = liberties[,1:67]
