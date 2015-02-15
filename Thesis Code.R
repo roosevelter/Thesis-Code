@@ -76,5 +76,5 @@ libcountries = liberties[,1]
 Nth.delete <- function(dataframe, n) dataframe[,-(seq(n,to=ncol(dataframe),by=n))]
 liberties = liberties[,2:ncol(liberties)]
 liberties = Nth.delete(liberties, 3)
-liberties = byapply(liberties, 2, rowMeans, na.rm = T)
+liberties = byapply(liberties, 2, rowMeans)
 liberties = cbind(libcountries, liberties)
