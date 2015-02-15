@@ -69,6 +69,7 @@ thirdmerge = thirdmerge[,-3]
 
 # Load in matched Freedom House data. Remember that the Freedom House data should be converted to .xlsx format first.
 liberties = read.xlsx("liberties.xlsx", 1)
+liberties = na.omit(liberties)
 liberties = liberties[1:205, c(1, 59:ncol(liberties))]
 liberties = liberties[,1:67]
 libcountries = liberties[,1]
