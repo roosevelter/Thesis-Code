@@ -73,8 +73,8 @@ liberties = liberties[1:205, c(1, 59:ncol(liberties))]
 liberties = liberties[,1:67]
 liberties = na.omit(liberties)
 country = liberties[,1]
-country = factor(libcountries)
-country = as.character(libcountries)
+country = factor(countries)
+country = as.character(countries)
 liberties = liberties[,2:ncol(liberties)]
 Nth.delete = function(dataframe, n) dataframe[,-(seq(n,to=ncol(dataframe),by=n))]
 liberties = Nth.delete(liberties, 3)
