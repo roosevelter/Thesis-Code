@@ -69,12 +69,15 @@ thirdmerge = thirdmerge[,-3]
 
 # Load in matched Freedom House data. Remember that the Freedom House data should be converted to .xlsx format first.
 liberties = read.xlsx("liberties.xlsx", 1)
-liberties = na.omit(liberties)
 liberties = liberties[1:205, c(1, 59:ncol(liberties))]
 liberties = liberties[,1:67]
-libcountries = liberties[,1]
-Nth.delete <- function(dataframe, n) dataframe[,-(seq(n,to=ncol(dataframe),by=n))]
+liberties = na.omit(liberties)
+country = liberties[,1]
+country = factor(libcountries)
+country = as.character(libcountries)
 liberties = liberties[,2:ncol(liberties)]
+Nth.delete = function(dataframe, n) dataframe[,-(seq(n,to=ncol(dataframe),by=n))]
 liberties = Nth.delete(liberties, 3)
 liberties = byapply(liberties, 2, rowMeans)
-liberties = cbind(libcountries, liberties)
+liberties = cbind(country, liberties)
+colnames(liberties) = c("country", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013")
