@@ -88,3 +88,9 @@ colnames(liberties) = c("country", "year", "polliberties")
 
 fourthmerge = merge(thirdmerge, liberties, by = c("country", "year")
 fourthmerge = fourthmerge[,-3]
+
+# Clean and load in the trade openness data from the World Bank. This is being used as a measure of globalization.
+colnames(tradeopenness)[1] = "country" ; tradeopenness = tradeopenness[,-c(2:4, 59)]
+tradeopenness = melt(tradeopenness)
+colnames(tradeopenness)[,2:3] = c("year" , "tradeopenness")
+tradeopenness$year = substring(tradeopenness$year, 2)
