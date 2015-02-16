@@ -92,5 +92,22 @@ fourthmerge = fourthmerge[,-3]
 # Clean and load in the trade openness data from the World Bank. This is being used as a measure of globalization.
 colnames(tradeopenness)[1] = "country" ; tradeopenness = tradeopenness[,-c(2:4, 59)]
 tradeopenness = melt(tradeopenness)
-colnames(tradeopenness)[,2:3] = c("year" , "tradeopenness")
+colnames(tradeopenness)[2:3] = c("year" , "tradeopenness")
 tradeopenness$year = substring(tradeopenness$year, 2)
+
+fifthmerge = merge(fourthmerge, tradeopenness, by = c("country", "year")
+
+# Load in the population data from the World Bank.
+colnames(lnpopulation)[1] = "country" ; lnpopulation = lnpopulation[,-c(2:4, 59)]
+lnpopulation = melt(lnpopulation)
+colnames(lnpopulation)[2:3] = c("year" , "lnpopulation")
+lnpopulation$year = substring(lnpopulation$year, 2)
+lnpopulation$lnpopulation = log(lnpopulation$lnpopulation)
+
+sixthmerge = merge(fifthmerge, lnpopulation, by = c("country", "year"))
+
+# Clean and load in regime durability variable (durable) from Polity IV.
+polity4 = subset(polity4, year > 1991, select = c(country, year, durable))
+rownames(polity4) = NULL
+
+seventhmerge = merge(sixthmerge, polity4, by = c("country", "year"))
