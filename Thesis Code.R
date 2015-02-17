@@ -120,5 +120,7 @@ epr = epr %>%
   select(-from,-to)
   
 epr = subset(epr, year > 1991 & year < 2014, select = c(statename, year, gwgroupid, size))
+epr = ddply(epr, .(statename, year), summarize, elf = 1 - sum(x^2))
+colnames(epr) = c("country", "year", "elf")
 
-elf = by(epr[,"size"], epr[,c("statename", "year")], function(x) 1-sum(x^2))
+eighthmerge = merge(seventhmerge, epr, by = c("country", "year"))
