@@ -2,8 +2,8 @@
 
 # Set your goddamn working directory. Load the required packages.
 setwd("C:/Users/lc1976/Desktop")
-install.packages(c("xlsx", "reshape2"))
-library(xlsx); library(reshape2)
+install.packages(c("xlsx", "reshape2", "tidyr"))
+library(xlsx); library(reshape2); library(tidyr)
 
 # Recording whether or not there was a terrorist attack for a country-year, and if so, the number. Be sure to read in GTD data first.
 no.doubt.terrorism = subset(terrorism, doubtterr == 0 & iyear > 1991)
@@ -111,3 +111,12 @@ polity4 = subset(polity4, year > 1991, select = c(country, year, durable))
 rownames(polity4) = NULL
 
 seventhmerge = merge(sixthmerge, polity4, by = c("country", "year"))
+
+# Load in the Ethnic Power Relations 2014 data.
+epr$year = mapply(seq, epr$from, epr$to, SIMPLIFY = F)
+
+epr = epr %>% 
+  unnest(year) %>% 
+  select(-from,-to)
+  
+epr = subset(epr, year > 1991 & year < 2014, select = c(statename, year, gwgroupid, size))
