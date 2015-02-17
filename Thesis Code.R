@@ -112,7 +112,7 @@ rownames(polity4) = NULL
 
 seventhmerge = merge(sixthmerge, polity4, by = c("country", "year"))
 
-# Load in the Ethnic Power Relations 2014 data.
+# Load in the Ethnic Power Relations 2014 data. Calculate ELF proposed by Alesina et al. (2003) from it.
 epr$year = mapply(seq, epr$from, epr$to, SIMPLIFY = F)
 
 epr = epr %>% 
@@ -120,3 +120,5 @@ epr = epr %>%
   select(-from,-to)
   
 epr = subset(epr, year > 1991 & year < 2014, select = c(statename, year, gwgroupid, size))
+
+elf = by(epr[,"size"], epr[,c("statename", "year")], function(x) 1-sum(x^2))
