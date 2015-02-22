@@ -124,3 +124,13 @@ epr = ddply(epr, .(statename, year), summarize, elf = 1 - sum(x^2))
 colnames(epr) = c("country", "year", "elf")
 
 eighthmerge = merge(seventhmerge, epr, by = c("country", "year"))
+eighthmerge = eighthmerge[, -3]
+
+# Load in the secondary school enrollment data from the World Bank.
+education = education[, -c(2:4)]
+education = education[, c(1, 34:55)]
+education = melt(education)
+colnames(education) = c("country", "year", "education")
+education$year = substring(education$year, 2)
+
+ninthmerge = merge(eighthmerge, education, by = c("country", "year"))
