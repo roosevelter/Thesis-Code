@@ -132,5 +132,15 @@ education = education[, c(1, 34:55)]
 education = melt(education)
 colnames(education) = c("country", "year", "education")
 education$year = substring(education$year, 2)
+education = na.omit(education)
 
 ninthmerge = merge(eighthmerge, education, by = c("country", "year"))
+
+# Load in the data on Official Development Assistance from the World Bank.
+aid = aid[, c(1, 34:55)]
+aid = melt(aid)
+colnames(aid) = c("country", "year", "aid")
+aid$year = substring(aid$year, 2)
+aid = na.omit(aid)
+
+tenthmerge = merge(ninthmerge, aid, by = c("country", "year"))
