@@ -2,8 +2,8 @@
 
 # Set your goddamn working directory. Load the required packages.
 setwd("C:/Users/lc1976/Desktop")
-install.packages(c("xlsx", "reshape2", "dplyr", "tidyr"))
-library(xlsx); library(reshape2); library(tidyr); library(tidyr)
+install.packages(c("xlsx", "reshape2", "dplyr", "tidyr", "foreign"))
+library(xlsx); library(reshape2); library(tidyr); library(foreign)
 
 # Recording whether or not there was a terrorist attack for a country-year, and if so, the number. Be sure to read in GTD data first.
 no.doubt.terrorism = subset(terrorism, doubtterr == 0 & iyear > 1991)
@@ -144,3 +144,8 @@ aid$year = substring(aid$year, 2)
 aid = na.omit(aid)
 
 tenthmerge = merge(ninthmerge, aid, by = c("country", "year"))
+
+# Load in Gallup's geographical data.
+geodat = read.dta("phys_geo.dta")
+geodat = geodat[ , c("country", "elev", "lcr100km")]
+eleventhmerge = merge(tenthmerge, geodat, by = "country")
