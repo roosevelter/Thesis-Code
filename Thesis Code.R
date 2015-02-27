@@ -26,9 +26,14 @@ swiid_data = subset(swiid_data, is.na(gini_net) == F, select = c(country, year, 
 first.merge = merge(no.doubt.terrorism, swiid_data, by = c("country", "year"))
 
 # Load in and clean the matched PRS data. 
-ethnic.tensions = read.xlsx("CountryData.xlsx", 1)
-ethnic.tensions = ethnic.tensions[ ,-2]
-ethnic.tensions = na.omit(ethnic.tensions)
+ethnictension = read.xlsx("CountryData.xlsx", 1)
+ethnictension = ethnictension[ ,-2]
+ethnictension = na.omit(ethnictension)
+country = ethnictension[,1]
+ethnictension = ethnictension[,-1]
+
+ethnictension = as.matrix(ethnictension)
+ethnictension = mapvalues(ethnictension, c(0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6), c(6, 5.5, 5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1, 0.5, 0))
 
 byapply <- function(x, by, fun, ...)
 {
@@ -51,16 +56,19 @@ byapply <- function(x, by, fun, ...)
             })
 }
 
-ethnic.tensions = byapply(ethnic.tensions[,3:ncol(ethnic.tensions)], 12, rowMeans)
-colnames(ethnic.tensions) = c("country", c(1984:2013))
-ethnic.tensions = melt(ethnic.tensions)
-colnames(ethnic.tensions) = c("country", "year", "ethnictension")
+ethnictension = byapply(ethnictension, 12, rowMeans)
+colnames(ethnictension) = c(as.character(1984:2013))
+ethnictension = as.data.frame(ethnictension)
+ethnictension$country = country
+ethnictension = melt(ethnictension)
+colnames(ethnictension) = c("country", "year", "ethnictension")
 
-second.merge = merge(first.merge, ethnic.tensions, by = c("country", "year"))
+second.merge = merge(first.merge, ethnictension, by = c("country", "year"))
 
-# Load in matched GDP per capita data from the World Bank.
+# Load in matched GDP per capita (in current USD) data from the World Bank.
 gdppc = gdppc[ , -c(2:4, 59)]
 gdppc = melt(gdppc)
+gdppc = na.omit(gdppc)
 colnames(gdppc) = c("country" , "year", "gdppc")
 gdppc$year = substring(gdppc$year, 2)
 
