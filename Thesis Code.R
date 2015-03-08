@@ -156,4 +156,5 @@ tenthmerge = merge(ninthmerge, aid, by = c("country", "year"))
 # Load in Gallup's geographical data.
 geodat = read.dta("phys_geo.dta")
 geodat = geodat[ , c("country", "elev", "lcr100km")]
+geodat[151,1] = "Tanzania"; geodat[147,1] = "Trinidad and Tobago"
 eleventhmerge = merge(tenthmerge, geodat, by = "country")
