@@ -107,6 +107,7 @@ fifthmerge = merge(fourthmerge, tradeopenness, by = c("country", "year")
 
 # Load in the population data from the World Bank.
 colnames(lnpopulation)[1] = "country" ; lnpopulation = lnpopulation[,-c(2:4, 59)]
+lnpopulation[191,1] = "Russia"; lnpopulation[216,1] = "Syria"; lnpopulation[103,1] = "Iran"
 lnpopulation = melt(lnpopulation)
 colnames(lnpopulation)[2:3] = c("year" , "lnpopulation")
 lnpopulation$year = substring(lnpopulation$year, 2)
