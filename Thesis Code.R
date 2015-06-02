@@ -1,6 +1,6 @@
 # Before all of this, clean the data sets so that each data set has matching country names. Country names should be matched to the GTD.
 
-# Set your goddamn working directory. Load the required packages.
+# Set your working directory. Load the required packages.
 setwd("C:/Users/lc1976/Desktop")
 install.packages(c("xlsx", "reshape2", "dplyr", "tidyr", "foreign"))
 library(xlsx); library(reshape2); library(tidyr); library(foreign)
@@ -127,7 +127,8 @@ epr$year = mapply(seq, epr$from, epr$to, SIMPLIFY = F)
 epr = epr %>% 
   unnest(year) %>% 
   select(-from,-to)
-  
+ 
+library(dplyr) 
 epr = subset(epr, year > 1991 & year < 2014, select = c(statename, year, gwgroupid, size))
 epr = ddply(epr, .(statename, year), summarize, elf = 1 - sum(size^2))
 colnames(epr) = c("country", "year", "elf")
@@ -157,5 +158,4 @@ tenthmerge = merge(ninthmerge, aid, by = c("country", "year"))
 # Load in Gallup's geographical data.
 geodat = read.dta("phys_geo.dta")
 geodat = geodat[ , c("country", "elev", "lcr100km")]
-geodat[151,1] = "Tanzania"; geodat[147,1] = "Trinidad and Tobago"
 eleventhmerge = merge(tenthmerge, geodat, by = "country")
